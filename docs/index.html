@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基于有状态的课堂点名系统 - 团队博客</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; line-height: 1.8; }
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  header { background: linear-gradient(135deg, #4361ee, #3a0ca3); color: #fff; text-align: center; padding: 60px 20px; }
+  header h1 { font-size: 2.2em; margin-bottom: 10px; }
+  header p { font-size: 1.1em; opacity: 0.85; }
+  .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); padding: 35px; margin: 25px 0; }
+  .card h2 { font-size: 1.5em; color: #4361ee; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #e8ecf4; }
+  table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+  th, td { border: 1px solid #e0e4ea; padding: 10px 14px; text-align: left; }
+  th { background: #f0f3f9; font-weight: 600; }
+  .tag { display: inline-block; background: #eef0ff; color: #4361ee; padding: 3px 12px; border-radius: 20px; font-size: 0.85em; margin: 3px 4px; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin: 15px 0; }
+  .feature-item { background: #f8f9fd; border-radius: 8px; padding: 20px; }
+  .feature-item h3 { font-size: 1.05em; color: #3a0ca3; margin-bottom: 8px; }
+  .feature-item p { font-size: 0.9em; color: #666; }
+  .img-placeholder { background: #eef0f8; border: 2px dashed #ccd2e2; border-radius: 8px; padding: 50px; text-align: center; color: #999; margin: 15px 0; font-size: 0.95em; }
+  .highlight { color: #4361ee; font-weight: 600; }
+  code { background: #f0f3f9; padding: 2px 7px; border-radius: 4px; font-size: 0.9em; }
+  .repo-link { font-size: 1.05em; word-break: break-all; }
+  .repo-link a { color: #4361ee; text-decoration: none; }
+  .repo-link a:hover { text-decoration: underline; }
+  footer { text-align: center; padding: 25px; color: #999; font-size: 0.85em; }
+  @media (max-width: 600px) { header { padding: 35px 15px; } header h1 { font-size: 1.5em; } .card { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>基于有状态的课堂点名系统</h1>
+  <p>面向对象程序设计(Java) 课程设计 · 团队项目博客</p>
+</header>
+
+<div class="container">
+
+  <!-- 项目简介 -->
+  <div class="card">
+    <h2>一、项目简介</h2>
+    <p>
+      本系统是一个面向高校课堂教学的辅助工具，旨在解决传统随机点名中"有的同学被点名多次、有的同学从未被点到"的不公平问题。
+      系统通过记录每位学生的历史被点名次数和回答问题次数，采用<strong>加权随机算法</strong>，确保每位学生获得均等的点名机会。
+      当连续多人无法回答问题时，自动启动<strong>救场机制</strong>，避免课堂僵局。
+    </p>
+  </div>
+
+  <!-- 技术栈 -->
+  <div class="card">
+    <h2>二、项目采用技术</h2>
+    <table>
+      <tr><th style="width:30%">类别</th><th>具体技术</th></tr>
+      <tr><td>开发语言</td><td>Java 8</td></tr>
+      <tr><td>GUI框架</td><td>Java Swing（JFrame / JTabbedPane / JTable）</td></tr>
+      <tr><td>数据持久化</td><td>Java对象序列化（ObjectOutputStream / ObjectInputStream），文件存储</td></tr>
+      <tr><td>第三方库</td><td>Apache POI 5.3.0（Excel读写）</td></tr>
+      <tr><td>架构模式</td><td>MVC三层架构 + DAO数据访问模式 + 策略模式</td></tr>
+      <tr><td>项目管理</td><td>Git + GitHub Issues</td></tr>
+    </table>
+  </div>
+
+  <!-- 功能需求分析 -->
+  <div class="card">
+    <h2>三、功能需求分析</h2>
+    <div class="feature-grid">
+      <div class="feature-item">
+        <h3>学生管理</h3>
+        <p>单个/批量添加学生、Excel导入导出、搜索过滤、请假/销假管理、数据持久化</p>
+      </div>
+      <div class="feature-item">
+        <h3>智能点名</h3>
+        <p>加权随机点名、自动救场机制、题目太难提示、继续提问模式、请假自动排除</p>
+      </div>
+      <div class="feature-item">
+        <h3>数据统计</h3>
+        <p>汇总卡片（总数/点名/答出/成功率）、排名表、点名频次分布</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 项目亮点 -->
+  <div class="card">
+    <h2>四、项目亮点</h2>
+    <ol>
+      <li><strong>加权随机算法</strong>：权重 = 100/(被点名次数+1)，累积权重法选择，确保点名机会均等</li>
+      <li><strong>双重智能救场机制</strong>：连续3人未答出 → 从高回答率学生中选取 → 救场3连败 → 提示"题目太难，建议老师讲解"</li>
+      <li><strong>完整的请假管理</strong>：搜索标记请假学生，点名时自动排除缺席者</li>
+      <li><strong>MVC+DAO+策略模式</strong>：三层架构分离，面向接口编程，更换存储方式无需修改上层代码</li>
+    </ol>
+  </div>
+
+  <!-- 系统架构 -->
+  <div class="card">
+    <h2>五、系统架构</h2>
+    <div style="text-align:center;margin:20px 0;">
+      <style>
+        .arch-box { display:inline-block; padding:12px 22px; border-radius:8px; margin:5px; font-size:0.9em; font-weight:600; }
+        .arch-view { background:#e8f0fe; border:2px solid #4285f4; color:#1a56db; }
+        .arch-service { background:#fef7e0; border:2px solid #f9ab00; color:#5f3e00; }
+        .arch-util { background:#fce8e6; border:2px solid #ea4335; color:#8b1a10; }
+        .arch-dao { background:#e6f4ea; border:2px solid #34a853; color:#1e4620; }
+        .arch-model { background:#f3e8fd; border:2px solid #9334e6; color:#3e1763; }
+        .arch-store { background:#e2e2e2; border:2px solid #666; color:#333; }
+        .arch-arrow { font-size:1.2em; color:#888; margin:0 8px; }
+        .arch-row { margin:12px 0; display:flex; align-items:center; justify-content:center; flex-wrap:wrap; }
+        .arch-label { font-size:0.85em; color:#999; text-align:center; margin:15px 0 5px; }
+      </style>
+
+      <div class="arch-label">—— View 层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-view">MainFrame<br><small>JTabbedPane 主窗口</small></span>
+      </div>
+      <div class="arch-row">
+        <span class="arch-box arch-view">StudentPanel<br><small>学生管理</small></span>
+        <span class="arch-box arch-view">RollCallPanel<br><small>课堂点名</small></span>
+        <span class="arch-box arch-view">StatisticsPanel<br><small>数据统计</small></span>
+      </div>
+
+      <div class="arch-label">—— Service 层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-service">RollCallService<br><small>点名状态管理</small></span>
+        <span class="arch-box arch-service">StatisticsService<br><small>汇总/频次/排名</small></span>
+      </div>
+
+      <div class="arch-label">—— Util 工具层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-util">WeightedRandom<br><small>加权随机算法</small></span>
+        <span class="arch-box arch-util">ExcelUtil<br><small>POI Excel读写</small></span>
+      </div>
+
+      <div class="arch-label">—— DAO 层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-dao">StudentDAO<br><small>对象序列化持久化</small></span>
+      </div>
+
+      <div class="arch-label">—— Model 层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-model">Student</span>
+        <span class="arch-box arch-model">RollCallRecord</span>
+      </div>
+
+      <div class="arch-label">—— 存储层 ——</div>
+      <div class="arch-row">
+        <span class="arch-box arch-store">students.dat</span>
+        <span class="arch-box arch-store">records.dat</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 功能截图 -->
+  <div class="card">
+    <h2>六、系统功能演示</h2>
+
+    <h3>学生管理界面</h3>
+    <img src="student-panel.png" alt="学生管理界面" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+    <p style="text-align:center;color:#999;font-size:0.9em;">负责人：张金睿</p>
+
+    <h3>课堂点名界面</h3>
+    <img src="rollcall-panel.png" alt="课堂点名界面" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+    <p style="text-align:center;color:#999;font-size:0.9em;">负责人：刘凯文</p>
+
+    <h3>数据统计界面</h3>
+    <img src="statistics-panel.png" alt="数据统计界面" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+    <p style="text-align:center;color:#999;font-size:0.9em;">负责人：孙崇阳</p>
+  </div>
+
+  <!-- 团队成员分工 -->
+  <div class="card">
+    <h2>七、团队成员负责模块</h2>
+    <table>
+      <tr><th>成员</th><th>角色</th><th>负责模块</th><th>核心文件</th></tr>
+      <tr>
+        <td>刘凯文</td><td>组长</td>
+        <td>加权随机算法、救场机制、点名交互界面、主窗口、Git管理</td>
+        <td>RollCallService.java<br>WeightedRandom.java<br>RollCallPanel.java<br>MainFrame.java</td>
+      </tr>
+      <tr>
+        <td>张金睿</td><td>组员</td>
+        <td>数据持久层(DAO)、Excel导入导出、学生管理界面、学生数据模型</td>
+        <td>StudentDAO.java<br>ExcelUtil.java<br>StudentPanel.java</td>
+      </tr>
+      <tr>
+        <td>孙崇阳</td><td>组员</td>
+        <td>统计服务、统计界面、汇总计算、频次分布、排名表</td>
+        <td>StatisticsService.java<br>StatisticsPanel.java</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Git仓库 -->
+  <div class="card">
+    <h2>八、项目Git仓库</h2>
+    <p class="repo-link">完整项目：<a href="https://github.com/qluliuliuliu/classroom-rollcall-system" target="_blank">github.com/qluliuliuliu/classroom-rollcall-system</a></p>
+  </div>
+
+  <!-- Git提交记录 -->
+  <div class="card">
+    <h2>九、团队成员Git提交记录</h2>
+
+    <h3>刘凯文提交记录</h3>
+    <img src="git-leader.png" alt="组长Git提交记录" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+
+    <h3>张金睿提交记录</h3>
+    <img src="git-zhangjinrui.jpg" alt="张金睿Git提交记录" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+
+    <h3>孙崇阳提交记录</h3>
+    <img src="git-sunchongyang.png" alt="孙崇阳Git提交记录" style="width:100%;max-width:800px;border:1px solid #e0e4ea;border-radius:8px;">
+  </div>
+
+</div>
+
+<footer>
+  <p>面向对象程序设计(Java) 课程设计 · 基于有状态的课堂点名系统 · 2026</p>
+</footer>
+
+</body>
+</html>

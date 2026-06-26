@@ -10,6 +10,7 @@ public class Student implements Serializable {
     private String className;
     private int totalCalled;
     private int totalAnswered;
+    private boolean onLeave = false;
 
     public Student(String studentNo, String name, String className) {
         this.studentNo = studentNo;
@@ -17,6 +18,7 @@ public class Student implements Serializable {
         this.className = className;
         this.totalCalled = 0;
         this.totalAnswered = 0;
+        this.onLeave = false;
     }
 
     public double getAnswerRate() {
@@ -35,4 +37,6 @@ public class Student implements Serializable {
     public void incrementCalled() { totalCalled++; }
     public int getTotalAnswered() { return totalAnswered; }
     public void incrementAnswered() { totalAnswered++; }
+    public boolean isOnLeave() { return onLeave; }
+    public void setOnLeave(boolean onLeave) { this.onLeave = onLeave; }
 }
